@@ -53,11 +53,13 @@ function init() {
 
         case "View departments":
           console.log("View department was selected");
+          viewDepartments();
           init();
           break;
 
         case "View roles":
           console.log("View roles was selected");
+          viewRoles();
           init();
           break;
 
@@ -83,6 +85,24 @@ function init() {
 
 function viewEmployees() {
     var query = "SELECT * FROM employee;";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table(res);
+
+});
+}
+
+function viewDepartments() {
+    var query = "SELECT * FROM department;";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table(res);
+
+});
+}
+
+function viewRoles() {
+    var query = "SELECT * FROM role;";
     connection.query(query, function(err, res) {
         if (err) throw err;
         console.table(res);
