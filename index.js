@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -38,6 +39,7 @@ function init() {
       switch (answer.action) {
         case "Add department":
           console.log("Add department was selected");
+          addDepartment();
           init();
           break;
 
@@ -48,6 +50,7 @@ function init() {
 
         case "Add employee":
           console.log("Add employee was selected");
+          addEmployee();
           init();
           break;
 
@@ -83,31 +86,90 @@ function init() {
 
 // FUNCTION DEFINITIONS
 
-function viewEmployees() {
-    var query = "SELECT * FROM employee;";
-    connection.query(query, function(err, res) {
-        if (err) throw err;
-        console.table(res);
+function addDepartment() {
+  inquirer
+    .prompt({
+      name: "name",
+      type: "input",
+      message: "What is the name of the department you'd like to add?",
+    })
+    .then(({ name }) => {
+      connection.query(
+        `INSERT into department (name) VALUES (?);`,
+        [name],
 
-});
+        function (err, res) {
+          if (err) throw err;
+        }
+      );
+    });
+
+  //   var query = "SELECT * FROM department;";
+  //   connection.query(query, function (err, res) {
+  //     if (err) throw err;
+  //     console.table(res);
+  //     console.log("Which department do you want to add?");
+  //   });
+}
+
+function addEmployee() {
+  inquirer
+    .prompt({
+      name: "firstName",
+      type: "input",
+      message: "What is the first name of the employee you'd like to add?",
+
+      name: "lastName",
+      type: "input",
+      message: "What is the last name of the employee you'd like to add?",
+
+      name: "roleID",
+      type: "input",
+      message: "What is the role ID of the employee you'd like to add?",
+
+      name: "managerID",
+      type: "input",
+      message: "What is the manager's ID of the employee you'd like to add?",
+    })
+    .then(({ firstName, lastName, roleID, managerID }) => {
+      connection.query(
+        `INSERT into employee (first_name) (last_name) (role_id) (manager_id) VALUES (?, ?, ?, ?);`,
+        [firstName],
+        [lastName],
+        [roleID],
+        [managerID],
+
+        function (err, res) {
+          if (err) throw err;
+        }
+      );
+    });
+}
+
+function addRoles() {}
+
+function viewEmployees() {
+  var query = "SELECT * FROM employee;";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+  });
 }
 
 function viewDepartments() {
-    var query = "SELECT * FROM department;";
-    connection.query(query, function(err, res) {
-        if (err) throw err;
-        console.table(res);
-
-});
+  var query = "SELECT * FROM department;";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+  });
 }
 
 function viewRoles() {
-    var query = "SELECT * FROM role;";
-    connection.query(query, function(err, res) {
-        if (err) throw err;
-        console.table(res);
-
-});
+  var query = "SELECT * FROM role;";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+  });
 }
 
 // FUNCTION CALLS
