@@ -163,7 +163,14 @@ function addEmployee() {
           },
         ])
         .then(({ firstName, lastName, roleID, managerID }) => {
-          console.log(fir)
+          connection.query(
+            `INSERT INTO employee (first_name) (last_name) (role_id) (manager_id) (?), (?), (?), (?);`,
+            function (err) {
+              if (err) throw err;
+
+              [firstName], [lastName], [roleID], [managerID];
+            }
+          );
           init();
         });
     });
