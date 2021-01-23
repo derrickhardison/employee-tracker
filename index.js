@@ -40,41 +40,41 @@ function init() {
         case "Add department":
           console.log("Add department was selected");
           addDepartment();
-          init();
+
           break;
 
         case "Add role":
           console.log("Add role was selected");
-          init();
+
           break;
 
         case "Add employee":
           console.log("Add employee was selected");
           addEmployee();
-          // init();
+
           break;
 
         case "View departments":
           console.log("View department was selected");
           viewDepartments();
-          init();
+
           break;
 
         case "View roles":
           console.log("View roles was selected");
           viewRoles();
-          init();
+
           break;
 
         case "View employees":
           console.log("View employees was selected");
           viewEmployees();
-          init();
+
           break;
 
         case "Update employee roles":
           console.log("Update employee roles was selected");
-          init();
+
           break;
 
         case "Done":
@@ -102,6 +102,7 @@ function addDepartment() {
           if (err) throw err;
         }
       );
+      init();
     });
 
   //   var query = "SELECT * FROM department;";
@@ -123,52 +124,51 @@ function addEmployee() {
       };
       return object;
     });
-  
 
     connection.query("SELECT * FROM employee", function (err, res) {
       if (err) throw err;
-      
+
       const employeesObject = res.map((employee) => {
         const newObject = {
           name: `${employee.first_name} ${employee.last_name}`,
-        value: employee.id,
-      };
-      return newObject;
-    });
-  
-
-    inquirer
-      .prompt([
-        {
-          name: "firstName",
-          type: "input",
-          message: "What is the first name of the employee you'd like to add?",
-        },
-        {
-          name: "lastName",
-          type: "input",
-          message: "What is the last name of the employee you'd like to add?",
-        },
-        {
-          name: "roleID",
-          type: "list",
-          message: "What is the role of the employee",
-          choices: arrayOfObjects,
-        },
-        {
-          name: "managerID",
-          type: "list",
-          message: "Who is the employee's manager?",
-          choices: employeesObject,
-        },
-      ])
-      .then(({ firstName, lastName, roleID, managerID }) => {
-        console.log(roleID);
+          value: employee.id,
+        };
+        return newObject;
       });
+
+      inquirer
+        .prompt([
+          {
+            name: "firstName",
+            type: "input",
+            message:
+              "What is the first name of the employee you'd like to add?",
+          },
+          {
+            name: "lastName",
+            type: "input",
+            message: "What is the last name of the employee you'd like to add?",
+          },
+          {
+            name: "roleID",
+            type: "list",
+            message: "What is the role of the employee",
+            choices: arrayOfObjects,
+          },
+          {
+            name: "managerID",
+            type: "list",
+            message: "Who is the employee's manager?",
+            choices: employeesObject,
+          },
+        ])
+        .then(({ firstName, lastName, roleID, managerID }) => {
+          console.log(fir)
+          init();
+        });
+    });
   });
 }
-
-
 
 function addRoles() {}
 
@@ -186,6 +186,7 @@ function viewDepartments() {
     if (err) throw err;
     console.table(res);
   });
+  init();
 }
 
 function viewRoles() {
