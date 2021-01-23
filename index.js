@@ -123,6 +123,19 @@ function addEmployee() {
       };
       return object;
     });
+  
+
+    connection.query("SELECT * FROM employee", function (err, res) {
+      if (err) throw err;
+      
+      const employeesObject = res.map((employee) => {
+        const newObject = {
+          name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+      };
+      return newObject;
+    });
+  
 
     inquirer
       .prompt([
@@ -144,27 +157,18 @@ function addEmployee() {
         },
         {
           name: "managerID",
-          type: "input",
-          message:
-            "What is the manager's ID of the employee you'd like to add?",
+          type: "list",
+          message: "Who is the employee's manager?",
+          choices: employeesObject,
         },
       ])
       .then(({ firstName, lastName, roleID, managerID }) => {
         console.log(roleID);
-        // connection.query(
-        //   `INSERT into employee (first_name) (last_name) (role_id) (manager_id) VALUES (?, ?, ?, ?);`,
-        //   [firstName],
-        //   [lastName],
-        //   [roleID],
-        //   [managerID],
-
-        //   function (err, res) {
-        //     if (err) throw err;
-        //   }
-        // );
       });
   });
 }
+
+
 
 function addRoles() {}
 
