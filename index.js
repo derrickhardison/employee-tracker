@@ -51,7 +51,7 @@ function init() {
         case "Add employee":
           console.log("Add employee was selected");
           addEmployee();
-          init();
+          // init();
           break;
 
         case "View departments":
@@ -113,37 +113,57 @@ function addDepartment() {
 }
 
 function addEmployee() {
-  inquirer
-    .prompt({
-      name: "firstName",
-      type: "input",
-      message: "What is the first name of the employee you'd like to add?",
-
-      name: "lastName",
-      type: "input",
-      message: "What is the last name of the employee you'd like to add?",
-
-      name: "roleID",
-      type: "input",
-      message: "What is the role ID of the employee you'd like to add?",
-
-      name: "managerID",
-      type: "input",
-      message: "What is the manager's ID of the employee you'd like to add?",
-    })
-    .then(({ firstName, lastName, roleID, managerID }) => {
-      connection.query(
-        `INSERT into employee (first_name) (last_name) (role_id) (manager_id) VALUES (?, ?, ?, ?);`,
-        [firstName],
-        [lastName],
-        [roleID],
-        [managerID],
-
-        function (err, res) {
-          if (err) throw err;
-        }
-      );
+  var query = "SELECT * FROM role;";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    const arrayOfObjects = res.map((role) => {
+      const object = {
+        name: role.title,
+        value: role.id,
+      };
+      return object;
     });
+
+    inquirer
+      .prompt([
+        {
+          name: "firstName",
+          type: "input",
+          message: "What is the first name of the employee you'd like to add?",
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is the last name of the employee you'd like to add?",
+        },
+        {
+          name: "roleID",
+          type: "list",
+          message: "What is the role of the employee",
+          choices: arrayOfObjects,
+        },
+        {
+          name: "managerID",
+          type: "input",
+          message:
+            "What is the manager's ID of the employee you'd like to add?",
+        },
+      ])
+      .then(({ firstName, lastName, roleID, managerID }) => {
+        console.log(roleID);
+        // connection.query(
+        //   `INSERT into employee (first_name) (last_name) (role_id) (manager_id) VALUES (?, ?, ?, ?);`,
+        //   [firstName],
+        //   [lastName],
+        //   [roleID],
+        //   [managerID],
+
+        //   function (err, res) {
+        //     if (err) throw err;
+        //   }
+        // );
+      });
+  });
 }
 
 function addRoles() {}
