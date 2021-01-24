@@ -44,7 +44,7 @@ function init() {
           break;
 
         case "Add role":
-          console.log("Add role was selected");
+          addRoles();
 
           break;
 
@@ -177,7 +177,37 @@ function addEmployee() {
   });
 }
 
-function addRoles() {}
+function addRoles() {
+  inquirer
+    .prompt([
+      {
+        name: "name",
+        type: "input",
+        message: "What is the name of the role you'd like to add?",
+      },
+      {
+        name: "salary",
+        type: "number",
+        message: "What is the salary?",
+      },
+      {
+        name: "department",
+        type: "number",
+        message: "What is the department ID?",
+      },
+    ])
+    .then(({ name, salary, department }) => {
+      connection.query(
+        `INSERT into role (title, salary, department_id) VALUES (?,?,?);`,
+        function (err, res) {
+          if (err) throw err;
+          [name], [salary], [department];
+          console.log(res)
+        }
+      );
+      init();
+    });
+}
 
 function viewEmployees() {
   var query = "SELECT * FROM employee;";
