@@ -185,6 +185,7 @@ function viewEmployees() {
     if (err) throw err;
     console.table(res);
   });
+  init();
 }
 
 function viewDepartments() {
@@ -202,6 +203,7 @@ function viewRoles() {
     if (err) throw err;
     console.table(res);
   });
+  init();
 }
 
 // FUNCTION CALLS
